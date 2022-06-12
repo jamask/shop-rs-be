@@ -14,9 +14,15 @@ const getProductsById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async
       break;
     }
   }
-  return formatJSONResponse({
-    'data': result,
-  });
+  if (result) {
+    return formatJSONResponse({
+      'data': result,
+    });
+  } else {
+    return formatJSONResponse({
+      'result': 'Product not found',
+    });
+  }
 };
 
 export const main = middyfy(getProductsById);
