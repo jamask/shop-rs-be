@@ -29,11 +29,14 @@ const getProductsById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async
   try {
     const productId = event['pathParameters']['productId'];
     const { rows: item } = await client.query(`select p.id, s.count, p.price, p.title, p.description from products p left join stocks s on p.id = s.product_id where p.id = '${productId}';`);
+    
     if (item) {
+      console.log('Get product: ', item)
       return formatJSONResponse({
         item,
       });
     } else {
+      console.log('Product not found')
       return formatJSONResponse({
         'result': 'Product not found',
       });

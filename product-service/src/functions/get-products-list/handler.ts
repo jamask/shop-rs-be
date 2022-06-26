@@ -29,6 +29,7 @@ const getProductsList: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async
   try {
 
     const { rows: items } = await client.query('select p.id, s.count, p.price, p.title, p.description from products p left join stocks s on p.id = s.product_id;');
+    console.log('Get products: ', items);
     return formatJSONResponse({
       items,
     });
