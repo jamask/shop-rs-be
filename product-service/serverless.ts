@@ -7,7 +7,7 @@ import getProductsById from '@functions/get-products-by-id';
 const serverlessConfiguration: AWS = {
   service: 'product-service',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild', 'serverless-webpack'],
+  plugins: ['serverless-esbuild'],
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
@@ -20,6 +20,12 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      PG_HOST: '*',
+      PG_PORT: '5432',
+      PG_DATABASE: 'task4',
+      PG_USERNAME: 'postgres',
+      PG_PASSWORD: '*',
+      
     },
   },
   // import the function via paths
@@ -30,17 +36,11 @@ const serverlessConfiguration: AWS = {
       bundle: true,
       minify: false,
       sourcemap: true,
-      exclude: ['aws-sdk'],
+      exclude: ['aws-sdk', 'pg-native'],
       target: 'node14',
       define: { 'require.resolve': undefined },
       platform: 'node',
       concurrency: 10,
-    },
-    webpack: {
-      webpackConfig: 'webpack.config.js',
-	    includeModules: true,
-      packager: 'npm',
-      excludeFiles: 'src/**/*.test.js',
     },
   },
 };
